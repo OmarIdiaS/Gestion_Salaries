@@ -1,0 +1,112 @@
+<div class="container">
+    <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
+                            <li class="nav-item">
+
+                                <a 
+                                  (click)="changeToOtherPage(true)" 
+                                  
+                                  [ngClass]="{'nav-link active btn btn-success':changePage === true , 'nav-link active btn ':true }"  
+                                  id="home-tab" data-toggle="tab"  role="tab" aria-controls="home" aria-selected="true">
+                                  Ajout d'un salarié
+                                </a>
+
+                            </li>
+                            <li class="nav-item">
+                                <a (click)="changeToOtherPage(false)"
+                                [ngClass]="{'nav-link': true , 'btn-success':changePage === false }"
+                                 id="profile-tab" data-toggle="tab"  role="tab" aria-controls="profile" aria-selected="false">Liste des salariés</a>
+                            </li>
+                        </ul>
+</div>
+
+<div class="container register" *ngIf="changePage">
+    <div class="row">
+        <div class="col-md-3 register-left">
+            <img src="https://image.ibb.co/n7oTvU/logo_white.png" alt=""/>
+            <h3>Bienvenue</h3>
+            <p>Inscription des salariés</p>
+            <br/>
+        </div>
+        <div class="col-md-9 register-right">
+            
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane  show active" id="home" >
+                    <h3 class="register-heading">Ajouter un nouveau salarié</h3>
+                    <form #salariesForm="ngForm" (ngSubmit) = "sendValues(salariesForm.value, salariesForm)" class="row register-form">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="nom">Nom</label>
+                                <input  class="form-control" type="text" ngModel  name="nom" placeholder="Nom du salarié">
+                            </div>
+                            <div class="form-group">
+                                <label for="dateDeNaissance">Date de naissance</label>
+                                <input type="date" class="form-control" ngModel name="dateDeNaissance">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="prenom">Prenom</label>
+                                <input type="text" class="form-control" ngModel name="prenom" placeholder="Prenom du salarié">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="numSecuriteSociale">Numéro de sécurité sociale</label>
+                                <input  ngModel name="numSecuriteSociale" type="number" class="form-control" placeholder="Numéro de sécurité sociale du salarié" value="" />
+                            </div>  
+                            <input type="submit" class="btnRegister"  value="Enregitrer"/>
+
+                            
+                        </div>
+                        <ul class="erreur">
+                            <li *ngIf="verifNom">Vérifier le nom du salarié</li>
+                            <li *ngIf="verifPrenom">Vérifier le prénom du salarié</li>
+                            <li *ngIf="verifDate">Vérifier la date de naissance du salarié</li>
+                            <li *ngIf="verifNSS">Le numéro de sécurité sociale du salarié doit comporter 15 chiffres</li>
+                            <li *ngIf = "verifExistence">Le salarié existe déjà dans notre base de données</li>
+                        </ul>
+                        <ul class="formEnvoyer">
+                          <li  *ngIf="infoEnvoyer">Salarié Bien enregistré, Merci !!</li>
+                        </ul>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+<ul>
+</ul>
+</div>
+
+<div class="container" *ngIf="!changePage">
+    <div class="row py-5">
+      <div class="col-12">
+        <table id="example" class="table table-responsive " style="width:100%">
+          <thead>
+            <tr>
+              <th>Nom Salarié</th>
+              <th>Prénom Salarié</th>
+              <th>Date de naissance</th>
+              <th>Numéro de sécurité sociale</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let s of salaries">
+              <td>
+                  <div class="d-flex align-items-center">
+                    <div class="avatar avatar-blue mr-3">{{s.nom | slice:0:1}}{{s.prenom | slice:0:1}}</div>
+                    <div>
+                      <p class="font-weight-bold mb-0">{{s.nom}}</p>
+                    </div>
+                  </div>
+              </td>
+              <td>{{s.prenom}}</td>
+              <td>{{s.dateDeNaissance | date:"dd/MM/yyyy"}}</td>
+              <td>{{s.numSecuriteSociale}}</td>
+              
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  
